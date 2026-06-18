@@ -711,7 +711,7 @@ Aliyun provider:
   - `ALIYUN_ASR_AUDIO_BITRATE`, default `64k`
   - `ALIYUN_ASR_HOTWORDS`
   - `ALIYUN_VIDEO_DETECT_MODE`, default `vl`
-  - `ALIYUN_VIDEO_MODEL`, default `qwen3.5-flash`
+  - `ALIYUN_VIDEO_MODEL`, default `qwen3-vl-flash`
   - `ALIYUN_GREEN_ENDPOINT`, default `green-cip.cn-shanghai.aliyuncs.com`, only for `green` mode
   - `ALIYUN_GREEN_VIDEO_SERVICE`, default `videoDetection`, only for `green` mode
 - Aliyun ASR uploads extracted MP3 audio to OSS, submits a signed OSS URL to DashScope, polls the async task, then deletes the temporary OSS object.

@@ -1370,3 +1370,18 @@
 - 已重启 SpringBoot 后端。
 - 已调用 `GET /api/statistics/overview`，返回 `aiPassRate=60.0`，不再固定为 0。
 - 已在浏览器打开 `http://localhost:5173/videos/12` 验证详情页布局，视频信息已位于播放器下方。
+
+## 2026-06-18 多模态模型降本切换
+
+### 调整内容
+
+- 将视频内容审核和视频一级分类使用的多模态模型从 `qwen3.5-flash` 切换为 `qwen3-vl-flash`。
+- `qwen3-vl-flash` 面向图像与视频理解，当前中国内地价格更低，并具有独立免费额度。
+- 视频审核和视频分类请求显式关闭思考模式，并将最大输出限制为 512 Token，减少无效输出消耗并提高 JSON 返回稳定性。
+- 同步更新本地 `.env`、`.env.example`、代码默认值和 API 文档；真实密钥仍只保存在被 Git 忽略的 `.env` 中。
+
+### 验证情况
+
+- 已执行 `python -m py_compile app/main.py`。
+- 已重启 FastAPI，`GET /ai/health` 返回 `status=ok`。
+- 已使用短视频调用 `POST /ai/content-category`，新模型返回 `教育科普`、`confidence=0.95`，证明云端调用成功。

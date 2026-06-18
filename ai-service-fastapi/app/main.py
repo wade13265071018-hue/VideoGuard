@@ -224,7 +224,7 @@ def classify_content_category(video_path: Path, title: str, description: str, as
 
 def call_dashscope_content_category(video_url: str, title: str, description: str, asr_text: str) -> dict:
     api_key = os.getenv("DASHSCOPE_API_KEY")
-    model = os.getenv("ALIYUN_CATEGORY_MODEL", os.getenv("ALIYUN_VIDEO_MODEL", "qwen3.5-flash"))
+    model = os.getenv("ALIYUN_CATEGORY_MODEL", os.getenv("ALIYUN_VIDEO_MODEL", "qwen3-vl-flash"))
     prompt = (
         "你是短视频一级内容分类模型。请结合视频画面、标题、描述和音频转写文本进行分类。"
         "只能从以下类别中选择一个：新闻资讯、娱乐搞笑、教育科普、生活记录、商品广告、其他。"
@@ -247,6 +247,8 @@ def call_dashscope_content_category(video_url: str, title: str, description: str
             }
         ],
         "temperature": 0,
+        "enable_thinking": False,
+        "max_tokens": 512,
     }
     data = requests_post_json(
         DASHSCOPE_CHAT_URL,
@@ -501,7 +503,7 @@ def call_dashscope_video_moderation(video_url: str) -> dict:
     api_key = os.getenv("DASHSCOPE_API_KEY")
     if not api_key:
         raise HTTPException(status_code=500, detail="DASHSCOPE_API_KEY is required for DashScope video moderation.")
-    model = os.getenv("ALIYUN_VIDEO_MODEL", "qwen3.5-flash")
+    model = os.getenv("ALIYUN_VIDEO_MODEL", "qwen3-vl-flash")
     prompt = (
         "你是短视频内容安全审核模型。请审核视频画面、字幕和可见文字，只输出严格 JSON，不要输出解释。"
         "这是多标签任务，一个视频可以同时属于 violence, porn, politics, illegal, ad, suspicious。"
@@ -521,6 +523,8 @@ def call_dashscope_video_moderation(video_url: str) -> dict:
             }
         ],
         "temperature": 0,
+        "enable_thinking": False,
+        "max_tokens": 512,
     }
     data = requests_post_json(
         DASHSCOPE_CHAT_URL,
